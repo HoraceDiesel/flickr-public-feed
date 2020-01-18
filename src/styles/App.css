@@ -1,0 +1,43 @@
+.my-hover-cursor {
+  cursor: pointer;
+}
+
+.my-scroll-top-container {
+  background-color: white;
+  border: none;
+  bottom: 0px;
+  display: flex;
+  justify-content: center;
+  left: 0px;
+  padding: 4px 0;
+  position: fixed;
+  width: 100%;
+}
+
+.my-scroll-top-container .my-scroll-top-icon {
+  width: 12px;
+  height: auto;
+  margin-right: 6px;
+}
+
+@media (min-width: 768px) {
+  .my-scroll-top-container {
+    position: fixed;
+    left: auto;
+    right: 50px;
+    bottom: 30px;
+    width: auto;
+    background-color: rgba(255, 255, 255, 0.4);
+    border: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 4px 8px;
+  }
+
+  .my-scroll-top-container .my-scroll-top-icon {
+    width: 40px;
+    height: 70px;
+  }
+}

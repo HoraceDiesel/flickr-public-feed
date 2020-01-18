@@ -1,68 +1,50 @@
-import React, { useState, useEffect } from 'react'
-import jsonp from 'browser-jsonp'
-import Button from 'react-bootstrap/Button'
+import React, { useEffect } from 'react'
 import FormControl from 'react-bootstrap/FormControl'
 import InputGroup from 'react-bootstrap/InputGroup'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import jsonp from 'browser-jsonp'
 
-const SearchBar = ({ updateFeeds }) => {
-  const [value, setValue] = useState('')
+import { API_ROOT } from '../config/constants'
+import { message } from '../config/messages'
 
+const SearchBar = ({ updateFeed, setError, value, setValue }) => {
   const handleInputChange = (event) => {
-    const value = event.target.value
-    setValue(value)
+    setValue(event.target.value)
+  }
+
+  window.jsonFlickrFeed = (data) => {
+    updateFeed(data.items || [])
+  }
+
+  useEffect(() => {
     if (!!value) {
-      fetchFeedsByTags(value)
+      const url = `${API_ROOT}/photos_public.gne`
+
+      jsonp({
+        url: url,
+        data: {
+          tags: value,
+          format: 'json'
+        },
+        callbackFunc: 'jsonFlickrFeed',
+        callbackName: 'jsonFlickrFeed',
+        success: (data) => {
+          updateFeed(data.items || [])
+        },
+        error: (err) => {
+          setError(err)
+        },
+      })
     }
-  }
-
-  const fetchFeedsByTags = (tags) => {
-    const jsonFlickrFeed = (json) => {
-      console.log('dsadsa')
-    }
-
-    // const callback = (err, data) => {
-    //   if (err) {
-    //     console.log('Error: ', err)
-    //   } else {
-
-    //     console.log(data)
-    //   }
-    // }
-
-    const url = 'https://www.flickr.com/services/feeds/photos_public.gne?jsoncallback=?'
-
-    // const opts = {
-    //   param: `tags=${tags}&format=json`,
-    // }
-
-    jsonp({
-      url: url,
-      data: {
-        tags: tags,
-        format: 'json'
-      },
-      success: (json) => { console.log('done') },
-      error: (err) => { console.log('Error: ', err) },
-      complete: () => { console.log('request sent') },
-      callbackName: 'jsonFlickrFeed',
-    })
-    // jsonp(url, opts, jsonFlickrFeed)
-  }
+  }, [value])
 
   return (
-    <InputGroup className="mb-3">
+    <InputGroup className={'mb-3'}>
       <FormControl
         value={value}
         onChange={handleInputChange}
-        placeholder="Search for public feeds by tags"
-        aria-label="Search for public feeds by tags"
-        aria-describedby="basic-addon2"
+        placeholder={message.searchBar.placeholderLabel}
+        aria-label={message.searchBar.placeholderLabel}
       />
-      <InputGroup.Append>
-        <Button variant="outline-secondary"><FontAwesomeIcon icon={faSearch} /> Search</Button>
-      </InputGroup.Append>
     </InputGroup>
   )
 }

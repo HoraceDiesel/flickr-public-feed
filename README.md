@@ -1,6 +1,6 @@
-# Flickr Public Feed
+# Flickr Public Feed Search
 
-Flickr Public Feed with React
+Flickr Public Feed Search with React
 
 ## System Dependencies
 

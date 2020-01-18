@@ -1,11 +1,27 @@
 import React from 'react'
-import Button from 'react-bootstrap/Button'
-import FormControl from 'react-bootstrap/FormControl'
-import InputGroup from 'react-bootstrap/InputGroup'
+import Alert from 'react-bootstrap/Alert'
+import { CardColumns } from 'react-bootstrap'
 
-const FeedList = () => {
+import FeedCard from './FeedCard'
+
+const FeedList = ({ feeds, setInputValue }) => {
+  if (feeds.length === 0) {
+    return (
+      <Alert variant={'danger'}>
+        <h3>Oops, it seems there is no matching images found!</h3>
+        <p>Please update the search terms...</p>
+      </Alert>
+    )
+  }
+
   return (
-    <div>ddsa</div>
+    <CardColumns>
+      {
+        feeds.map((feed, i) => (
+          <FeedCard key={i} data={feed} setInputValue={setInputValue} />
+        ))
+      }
+    </CardColumns>
   )
 }
 
